@@ -1,0 +1,5 @@
+Key Notes
+    - ingest_all is used to trigger all the other notebooks from one single notebook using dbutils.notebook.run()
+    - Variables can be passed during the notebook trigger using dbutils.widgets.text("<variable_name>", "")
+    - you can refer to common files using the %run command example : %run "../configuration/config"
+    - common functions also can be defined and those can be referred using the same %run command
