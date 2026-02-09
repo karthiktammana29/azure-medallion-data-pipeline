@@ -53,6 +53,9 @@ Acts as the orchestration and workflow management layer, responsible for:
 •	Handling retries, logging, and monitoring
 ADF ensures reliable, automated end-to-end pipeline execution.
 
+Note : Azure Data Factory changes are maintained and published in a separate repository for easier management and version control.
+https://github.com/karthiktammana29/azure-data-factory
+
 **Databricks Clusters**
 
 Compute clusters are configured to execute ETL jobs efficiently, with:
