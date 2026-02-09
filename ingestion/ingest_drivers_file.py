@@ -34,15 +34,15 @@ drivers_schema = StructType(fields=[StructField("driverId", IntegerType(), False
 ])
 
 #Set the configs to authenticate to the storage account using service principal
-spark.conf.set("fs.azure.account.auth.type.dlkt.dfs.core.windows.net", "OAuth")
-spark.conf.set("fs.azure.account.oauth.provider.type.dlkt.dfs.core.windows.net", "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider")
-spark.conf.set("fs.azure.account.oauth2.client.id.dlkt.dfs.core.windows.net", client_id)
-spark.conf.set("fs.azure.account.oauth2.client.secret.dlkt.dfs.core.windows.net", client_secret)
-spark.conf.set("fs.azure.account.oauth2.client.endpoint.dlkt.dfs.core.windows.net", f"https://login.microsoftonline.com/{tenant_id}/oauth2/token")
+spark.conf.set("fs.azure.account.auth.type."<storage_account>".dfs.core.windows.net", "OAuth")
+spark.conf.set("fs.azure.account.oauth.provider.type."<storage_account>".dfs.core.windows.net", "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider")
+spark.conf.set("fs.azure.account.oauth2.client.id."<storage_account>".dfs.core.windows.net", client_id)
+spark.conf.set("fs.azure.account.oauth2.client.secret."<storage_account>".dfs.core.windows.net", client_secret)
+spark.conf.set("fs.azure.account.oauth2.client.endpoint."<storage_account>".dfs.core.windows.net", f"https://login.microsoftonline.com/{tenant_id}/oauth2/token")
 
 drivers_df = spark.read \
                 .schema(drivers_schema) \
-                .json(f"abfss://raw@dlkt.dfs.core.windows.net/drivers.json")
+                .json(f"{raw_folder_path}/drivers.json")
 
 
 drivers_with_ingestion_date_df = add_ingestion_date(drivers_df)

@@ -24,11 +24,11 @@ tenant_id = dbutils.secrets.get(scope="<databricks-scope>",key="<tenant-id-key-n
 client_secret = dbutils.secrets.get(scope="<databricks-scope>",key="<client-secret-key-name>")
 
 #Set the configs to authenticate to the storage account using service principal
-spark.conf.set("fs.azure.account.auth.type.dlkt.dfs.core.windows.net", "OAuth")
-spark.conf.set("fs.azure.account.oauth.provider.type.dlkt.dfs.core.windows.net", "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider")
-spark.conf.set("fs.azure.account.oauth2.client.id.dlkt.dfs.core.windows.net", client_id)
-spark.conf.set("fs.azure.account.oauth2.client.secret.dlkt.dfs.core.windows.net", client_secret)
-spark.conf.set("fs.azure.account.oauth2.client.endpoint.dlkt.dfs.core.windows.net", f"https://login.microsoftonline.com/{tenant_id}/oauth2/token")
+spark.conf.set("fs.azure.account.auth.type."<storage_account>".dfs.core.windows.net", "OAuth")
+spark.conf.set("fs.azure.account.oauth.provider.type."<storage_account>".dfs.core.windows.net", "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider")
+spark.conf.set("fs.azure.account.oauth2.client.id."<storage_account>".dfs.core.windows.net", client_id)
+spark.conf.set("fs.azure.account.oauth2.client.secret."<storage_account>".dfs.core.windows.net", client_secret)
+spark.conf.set("fs.azure.account.oauth2.client.endpoint."<storage_account>".dfs.core.windows.net", f"https://login.microsoftonline.com/{tenant_id}/oauth2/token")
 
 
 pit_stops_schema = StructType(fields=[StructField("raceId", IntegerType(), False),
@@ -43,7 +43,7 @@ pit_stops_schema = StructType(fields=[StructField("raceId", IntegerType(), False
 pit_stops_df = spark.read \
                     .schema(pit_stops_schema) \
                     .option("multiLine", True) \
-                    .json(f"abfss://raw@dlkt.dfs.core.windows.net/pit_stops.json")
+                    .json(f"{raw_folder_path}/pit_stops.json")
 
 pit_stops_with_ingestion_date_df = add_ingestion_date(pit_stops_df)
 

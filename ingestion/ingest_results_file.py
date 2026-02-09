@@ -24,11 +24,11 @@ tenant_id = dbutils.secrets.get(scope="<databricks-scope>",key="<tenant-id-key-n
 client_secret = dbutils.secrets.get(scope="<databricks-scope>",key="<client-secret-key-name>")
 
 #Set the configs to authenticate to the storage account using service principal
-spark.conf.set("fs.azure.account.auth.type.dlkt.dfs.core.windows.net", "OAuth")
-spark.conf.set("fs.azure.account.oauth.provider.type.dlkt.dfs.core.windows.net", "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider")
-spark.conf.set("fs.azure.account.oauth2.client.id.dlkt.dfs.core.windows.net", client_id)
-spark.conf.set("fs.azure.account.oauth2.client.secret.dlkt.dfs.core.windows.net", client_secret)
-spark.conf.set("fs.azure.account.oauth2.client.endpoint.dlkt.dfs.core.windows.net", f"https://login.microsoftonline.com/{tenant_id}/oauth2/token")
+spark.conf.set("fs.azure.account.auth.type."<storage_account>".dfs.core.windows.net", "OAuth")
+spark.conf.set("fs.azure.account.oauth.provider.type."<storage_account>".dfs.core.windows.net", "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider")
+spark.conf.set("fs.azure.account.oauth2.client.id."<storage_account>".dfs.core.windows.net", client_id)
+spark.conf.set("fs.azure.account.oauth2.client.secret."<storage_account>".dfs.core.windows.net", client_secret)
+spark.conf.set("fs.azure.account.oauth2.client.endpoint."<storage_account>".dfs.core.windows.net", f"https://login.microsoftonline.com/{tenant_id}/oauth2/token")
 
 results_schema = StructType(fields=[StructField("resultId", IntegerType(), False),
                                     StructField("raceId", IntegerType(), True),
@@ -51,7 +51,7 @@ results_schema = StructType(fields=[StructField("resultId", IntegerType(), False
 
 results_df = spark.read \
                 .schema(results_schema) \
-                .json(f"abfss://raw@dlkt.dfs.core.windows.net/results.json")
+                .json(f"{raw_folder_path}/results.json")
 
 results_with_columns_df = results_df.withColumnRenamed("resultId", "result_id") \
                                     .withColumnRenamed("raceId", "race_id") \
